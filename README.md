@@ -1,6 +1,6 @@
 # SQL: Um Teste de SQL
 
-Este é um teste de SQL, nível intermediário, desenvolvido para a empresa VersoTech.
+Este é um teste de SQL de nível intermediário, desenvolvido para a empresa VersoTech.
 
 ## Estrutura do Banco
 
@@ -208,3 +208,5 @@ JOIN
   vendedores AS v ON c.id_vendedor = v.id_vendedor;
 ```
 Por fim, a instrução mais complexa de todas, afinal é preciso unir a listagem de produtos com a listagem de clientes e procurar pelo último preço praticado nesse cliente com esse produto, formulando o preço base do produto. Para atingir o objetivo, inicialmente foram explicitados todos os campos que deveriam ser retornados pela instrução. Um desses campos é o `preco_base`, e para retorná-lo foi construída uma subquery que seleciona todos os registros de `preco_praticado` do produto para o cliente, verifica se esse preço está respeitando a configuração de preço imposta pela tabela `CONFIG_PRECO_PRODUTO`, ordena todos esses registros pela data de emissão em ordem decrescente, e então limita o retorno da instrução para um valor, garantindo que apenas o último registro de preço seja fornecido, assim como é definido pelo teste. Essa subquery está envolvida pela função `COALESCE`, a qual recebe outro parâmetro além da própria subquery: o preço mínimo. Sendo assim, a função irá retornar o primeiro valor que não seja nulo entre eles, começando logicamente pela subquery. Dessa forma, caso ela não retorne nenhum valor, o preço mínimo será considerado como preço base. Por fim, são executadas todas as cláusulas `JOIN` para garantir o correto relacionamento entre todas as chaves estrangeiras da consulta.
+
+*OBS: Para testar o correto funcionamento dessa instrução, basta alterar dois registros e garantir que os atributos `id_cliente` e `id_cliente` sejam os mesmos. Após isso, você irá notar que o campo de preço base irá variar conforme a alteração na data de emissão da compra. Outro teste pode ser realizado ao mudar o atributo `preco_praticado` na compra de um cliente para um valor que não esteja de acordo com a configuração de preço do produto ou para nulo, pois a consulta irá retornar o preço mínimo nesse caso.*
