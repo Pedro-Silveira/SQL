@@ -125,8 +125,68 @@ INSERT INTO itens_pedido (id_pedido, id_produto, preco_praticado, quantidade) VA
 ## QUERYS
 
 ```
+SELECT * FROM vendedores ORDER BY salario DESC;
+```
+
+```
+SELECT * FROM pedido ORDER BY data_emissao DESC;
+```
+
+```
+SELECT id_cliente, sum(valor_total) FROM pedido GROUP BY id_cliente;
+```
+
+```
+SELECT id_empresa, sum(valor_total) FROM pedido GROUP BY id_empresa;
+```
+
+```
+SELECT c.id_vendedor, sum(p.valor_total) FROM pedido AS p, clientes AS c WHERE p.id_cliente = c.id_cliente GROUP BY c.id_vendedor;
+```
+
+```
+SELECT 
+    P.id_produto,
+    P.descricao AS descricao_produto,
+    C.id_cliente,
+    C.razao_social AS razao_social_cliente,
+    CP.id_empresa,
+    E.razao_social AS razao_social_empresa,
+    C.id_vendedor,
+    V.nome AS nome_vendedor,
+    CP.preco_minimo,
+    CP.preco_maximo,
+    COALESCE(MAX(IP.preco_praticado), CP.preco_minimo) AS preco_base
+FROM 
+    PRODUTOS AS P
+JOIN 
+    CONFIG_PRECO_PRODUTO AS CP ON P.id_produto = CP.id_produto
+JOIN 
+    CLIENTES AS C ON CP.id_empresa = C.id_empresa
+JOIN 
+    PEDIDO AS PD ON PD.id_cliente = C.id_cliente
+JOIN 
+    ITENS_PEDIDO AS IP ON PD.id_pedido = IP.id_pedido AND P.id_produto = IP.id_produto
+JOIN 
+    EMPRESA AS E ON CP.id_empresa = E.id_empresa
+JOIN 
+    VENDEDORES AS V ON C.id_vendedor = V.id_vendedor;
+```
 
 ```
 ```
+
+```
+```
+
+```
+```
+
+```
+```
+
+```
+```
+
 ```
 ```
