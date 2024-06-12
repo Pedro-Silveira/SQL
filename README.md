@@ -95,31 +95,31 @@ INSERT INTO vendedores (nome, cargo, salario, data_admissao, inativo) VALUES
 ```
 
 ```
-INSERT INTO CONFIG_PRECO_PRODUTO (id_vendedor, id_empresa, id_produto, preco_minimo, preco_maximo) VALUES
-(1, 1, 1, 45.00, 55.00),
-(2, 1, 2, 90.00, 110.00),
-(3, 2, 1, 70.00, 80.00);
+INSERT INTO config_preco_produto (id_vendedor, id_empresa, id_produto, preco_minimo, preco_maximo) VALUES
+(1, 1, 1, 10.00, 20.00),
+(1, 1, 2, 25.00, 35.00),
+(2, 2, 3, 40.00, 60.00);
 ```
 
 ```
 INSERT INTO clientes (razao_social, data_cadastro, id_vendedor, id_empresa, inativo) VALUES
-('Chaves', '2021-05-22', 1, 1, FALSE),
-('Quico', '2020-11-13', 2, 1, FALSE),
-('Chiquinha', '2022-02-01', 1, 2, TRUE);
+('Chaves', '2020-01-01', 1, 1, FALSE),
+('Quico', '2020-01-01', 1, 1, FALSE),
+('Chiquinha', '2020-01-02, 2, 2, FALSE);
 ```
 
 ```
 INSERT INTO pedido (id_empresa, id_cliente, valor_total, data_emissao, situacao) VALUES
-(1, 1, 100.00, '2023-03-01', 'C'),
-(1, 2, 200.00, '2023-03-05', 'P'),
-(2, 3, 150.00, '2023-03-10', 'X');
+(1, 1, 60.00, '2023-01-01', 'C'),
+(1, 2, 300.00, '2023-01-02', 'P'),
+(2, 3, 100.00, '2023-01-03', 'X');
 ```
 
 ```
 INSERT INTO itens_pedido (id_pedido, id_produto, preco_praticado, quantidade) VALUES
-(1, 1, 50.00, 2),
-(2, 2, 100.00, 2),
-(3, 1, 75.00, 2);
+(1, 1, 15.00, 4),
+(2, 2, 30.00, 10),
+(3, 3, 50.00, 2);
 ```
 
 ## QUERYS
@@ -133,60 +133,62 @@ SELECT * FROM pedido ORDER BY data_emissao DESC;
 ```
 
 ```
-SELECT id_cliente, sum(valor_total) FROM pedido GROUP BY id_cliente;
+SELECT id_cliente, SUM(valor_total) as faturamento FROM pedido GROUP BY id_cliente;
 ```
 
 ```
-SELECT id_empresa, sum(valor_total) FROM pedido GROUP BY id_empresa;
+SELECT id_empresa, SUM(valor_total) as faturamento FROM pedido GROUP BY id_empresa;
 ```
 
 ```
-SELECT c.id_vendedor, sum(p.valor_total) FROM pedido AS p, clientes AS c WHERE p.id_cliente = c.id_cliente GROUP BY c.id_vendedor;
+SELECT c.id_vendedor, SUM(p.valor_total) AS faturamento FROM pedido AS p, clientes AS c WHERE p.id_cliente = c.id_cliente GROUP BY c.id_vendedor;
 ```
 
 ```
-SELECT 
-    P.id_produto,
-    P.descricao AS descricao_produto,
-    C.id_cliente,
-    C.razao_social AS razao_social_cliente,
-    CP.id_empresa,
-    E.razao_social AS razao_social_empresa,
-    C.id_vendedor,
-    V.nome AS nome_vendedor,
-    CP.preco_minimo,
-    CP.preco_maximo,
-    COALESCE(MAX(IP.preco_praticado), CP.preco_minimo) AS preco_base
-FROM 
-    PRODUTOS AS P
-JOIN 
-    CONFIG_PRECO_PRODUTO AS CP ON P.id_produto = CP.id_produto
-JOIN 
-    CLIENTES AS C ON CP.id_empresa = C.id_empresa
-JOIN 
-    PEDIDO AS PD ON PD.id_cliente = C.id_cliente
-JOIN 
-    ITENS_PEDIDO AS IP ON PD.id_pedido = IP.id_pedido AND P.id_produto = IP.id_produto
-JOIN 
-    EMPRESA AS E ON CP.id_empresa = E.id_empresa
-JOIN 
-    VENDEDORES AS V ON C.id_vendedor = V.id_vendedor;
-```
-
-```
-```
-
-```
-```
-
-```
-```
-
-```
-```
-
-```
-```
-
-```
+SELECT
+  prod.id_produto,
+  prod.descricao,
+  ped.id_cliente,
+  c.razao_social AS razao_social_cliente,
+  ped.id_empresa,
+  e.razao_social AS razao_social_empresa,
+  c.id_vendedor,
+  v.nome AS nome_vendedor,
+  cpp.preco_minimo,
+  cpp.preco_maximo,
+  COALESCE(
+    (
+      SELECT
+        ip2.preco_praticado 
+      FROM
+        itens_pedido ip2 
+      JOIN 
+        pedido ped2 ON ped2.id_pedido = ip2.id_pedido
+      WHERE
+        ip2.id_produto = prod.id_produto
+      AND
+        ped2.id_cliente = ped.id_cliente
+      AND
+        ped2.id_empresa = ped.id_empresa
+      AND
+        ip2.preco_praticado BETWEEN cpp.preco_minimo AND cpp.preco_maximo
+      ORDER BY
+        ped2.data_emissao DESC 
+      LIMIT 1
+    ), cpp.preco_minimo
+  ) AS preco_base
+FROM
+  produtos AS prod
+JOIN
+  config_preco_produto AS cpp ON cpp.id_produto = prod.id_produto
+JOIN
+  clientes AS c ON cpp.id_empresa = c.id_empresa
+JOIN
+  pedido AS ped ON ped.id_cliente = c.id_cliente AND ped.id_empresa = cpp.id_empresa
+JOIN
+  itens_pedido AS ip ON ped.id_pedido = ip.id_pedido AND prod.id_produto = ip.id_produto
+JOIN
+  empresa AS e ON cpp.id_empresa = e.id_empresa
+JOIN
+  vendedores AS v ON c.id_vendedor = v.id_vendedor;
 ```
