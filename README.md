@@ -95,9 +95,9 @@ INSERT INTO produtos (descricao, inativo) VALUES
 ```
 ```
 INSERT INTO vendedores (nome, cargo, salario, data_admissao, inativo) VALUES
-('Pedro', 'Backend', 3500.00, '2024-01-24', FALSE),
-('Henrique', 'Fullstack', 4000.00, '2014-03-20', FALSE),
-('Silveira', 'Frontend', 3000.00, '2021-07-10', TRUE);
+('Pedro', 'Backend', 3500.00, '2024-06-12', FALSE),
+('Henrique', 'Fullstack', 4000.00, '2024-06-12', FALSE),
+('Silveira', 'Frontend', 3000.00, '2024-06-12', TRUE);
 ```
 ```
 INSERT INTO config_preco_produto (id_vendedor, id_empresa, id_produto, preco_minimo, preco_maximo) VALUES
@@ -107,15 +107,15 @@ INSERT INTO config_preco_produto (id_vendedor, id_empresa, id_produto, preco_min
 ```
 ```
 INSERT INTO clientes (razao_social, data_cadastro, id_vendedor, id_empresa, inativo) VALUES
-('Chaves', '2020-01-01', 1, 1, FALSE),
-('Quico', '2020-01-01', 1, 1, FALSE),
-('Chiquinha', '2020-01-02', 2, 2, FALSE);
+('Chaves', '2020-08-01', 1, 1, FALSE),
+('Quico', '2020-08-01', 1, 1, FALSE),
+('Chiquinha', '2020-08-01', 2, 2, FALSE);
 ```
 ```
 INSERT INTO pedido (id_empresa, id_cliente, valor_total, data_emissao, situacao) VALUES
-(1, 1, 60.00, '2023-01-01', 'C'),
-(1, 2, 300.00, '2023-01-02', 'P'),
-(2, 3, 100.00, '2023-01-03', 'X');
+(1, 1, 60.00, '2022-06-12', 'C'),
+(1, 2, 300.00, '2022-06-13', 'P'),
+(2, 3, 100.00, '2022-06-14', 'X');
 ```
 ```
 INSERT INTO itens_pedido (id_pedido, id_produto, preco_praticado, quantidade) VALUES
