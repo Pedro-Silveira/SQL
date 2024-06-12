@@ -74,20 +74,58 @@ CREATE TABLE itens_pedido(
 
 ## INSERTS
 ```
+INSERT INTO empresa (razao_social, inativo) VALUES
+('VersoTech', FALSE),
+('Verso', FALSE),
+('Tech', TRUE);
 ```
+
 ```
+INSERT INTO produtos (descricao, inativo) VALUES
+('Software', FALSE),
+('Hardware', FALSE),
+('Alienware', TRUE);
 ```
+
 ```
+INSERT INTO vendedores (nome, cargo, salario, data_admissao, inativo) VALUES
+('Pedro', 'Backend', 3500.00, '2024-01-24', FALSE),
+('Henrique', 'Fullstack', 4000.00, '2014-03-20', FALSE),
+('Silveira', 'Frontend', 3000.00, '2021-07-10', TRUE);
 ```
+
 ```
+INSERT INTO CONFIG_PRECO_PRODUTO (id_vendedor, id_empresa, id_produto, preco_minimo, preco_maximo) VALUES
+(1, 1, 1, 45.00, 55.00),
+(2, 1, 2, 90.00, 110.00),
+(3, 2, 1, 70.00, 80.00);
 ```
+
 ```
+INSERT INTO clientes (razao_social, data_cadastro, id_vendedor, id_empresa, inativo) VALUES
+('Chaves', '2021-05-22', 1, 1, FALSE),
+('Quico', '2020-11-13', 2, 1, FALSE),
+('Chiquinha', '2022-02-01', 1, 2, TRUE);
 ```
+
 ```
+INSERT INTO pedido (id_empresa, id_cliente, valor_total, data_emissao, situacao) VALUES
+(1, 1, 100.00, '2023-03-01', 'C'),
+(1, 2, 200.00, '2023-03-05', 'P'),
+(2, 3, 150.00, '2023-03-10', 'X');
 ```
+
 ```
+INSERT INTO itens_pedido (id_pedido, id_produto, preco_praticado, quantidade) VALUES
+(1, 1, 50.00, 2),
+(2, 2, 100.00, 2),
+(3, 1, 75.00, 2);
 ```
+
+## QUERYS
+
 ```
+
 ```
 ```
 ```
