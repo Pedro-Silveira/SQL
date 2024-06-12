@@ -142,13 +142,13 @@ Segue a mesma lógica da consulta anterior. Vale ressaltar que nesse caso não �
 
 ### Valor de faturamento por cliente.
 ```
-SELECT id_cliente, SUM(valor_total) as faturamento FROM pedido GROUP BY id_cliente;
+SELECT id_cliente, SUM(valor_total) AS faturamento FROM pedido GROUP BY id_cliente;
 ```
 Para atingir o objeto, utiliza-se a função `SUM()` para somar os valores de faturamento do cliente, e isso apenas é possível porque a instrução agrupa os dados pelo ID do cliente.
 
 ### Valor de faturamento por empresa.
 ```
-SELECT id_empresa, SUM(valor_total) as faturamento FROM pedido GROUP BY id_empresa;
+SELECT id_empresa, SUM(valor_total) AS faturamento FROM pedido GROUP BY id_empresa;
 ```
 Segue a mesma lógica da instrução anterior.
 
